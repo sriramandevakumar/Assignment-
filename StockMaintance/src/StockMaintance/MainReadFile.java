@@ -23,15 +23,15 @@ import java.util.Set;
 public class MainReadFile {
     private static Scanner sc;
     public static HashMap<String, Double> hash=new HashMap<String, Double>();
-	public static void  main(String[] args) throws sri  {
+	public static void  main(String[] args) throws FileException  {
     		sc = new Scanner(System.in);  
 	    	String File=sc.next();
 	    	ReadFile(File);
 	}
 	
-	public static HashMap<Double, String> ReadFile(String Filename) throws  sri{
+	public static HashMap<Double, String> ReadFile(String Filename) throws  FileException{
 		HashMap< Double,String> versionString=null;
-		try{
+	   try{
 	    	if(Filename.contains(".txt")){
 		    	hash=ReadingRate();
 		    	versionString = readingLinesfromFiles(Filename);
@@ -46,24 +46,25 @@ public class MainReadFile {
 			    	   {
 		    			  if(D==entry.getKey()){
 		    				  System.out.println(entry.getValue());
+		    				  versionString.put(entry.getKey(),entry.getValue());
 		    			  }
 			    	   }
 		    		  
 		    	  }
 	    	}else{
-	    		throw new sri ("Given document is not in prescribed extention");
+	    		throw new FileException ("Given document is not in prescribed extention");
 	    	}
 		}catch(NullPointerException e){
-			throw new sri("Given document is not in prescribed fromat",e);
+			throw new FileException("Given document is not in prescribed fromat",e);
 		}catch (FileNotFoundException e) {
-			throw new sri("Given document is not found in location",e);
+			throw new FileException("Given document is not found in location",e);
 		} catch (Exception e) {
-			throw new sri(e);
+			throw new FileException(e);
 		}
 		return versionString;
 	}
 
-	private static HashMap<String, Double> ReadingRate() throws  sri {
+	private static HashMap<String, Double> ReadingRate() throws  FileException {
 		 try {
 	            FileReader reader = new FileReader("rate.txt");
 	            BufferedReader bufferedReader = new BufferedReader(reader);
@@ -80,9 +81,9 @@ public class MainReadFile {
 	            }
 	            reader.close();
 	        }catch (NumberFormatException e) {
-	            throw new sri("Please fill correct rate in rate document",e);
+	            throw new FileException("Please fill correct rate in rate document",e);
 	        }catch (Exception e) {
-	            throw new sri(e);
+	            throw new FileException(e);
 	        }
 		 return hash;
 	}
@@ -110,7 +111,7 @@ public class MainReadFile {
 		            }
 		            reader.close();
 	        	}catch(NullPointerException e) {
-	        		    throw new sri("Without correct rate we cant proceed further",e);
+	        		    throw new FileException("Without correct rate we cant proceed further",e);
 	        	}
 	return Valuehash;
     }
