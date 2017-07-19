@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
-public class ReadMANIFESTFile {
+public class MainReadFile {
     private static Scanner sc;
     public static HashMap<String, Double> hash=new HashMap<String, Double>();
 	public static void main(String[] args) throws IOException {
