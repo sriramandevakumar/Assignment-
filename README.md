@@ -13,6 +13,7 @@ In which price of each stocks has been taken from rate.txt file.
 An example run would be:
 
 >> test1.txt
+
 GOOG - 100,AMZN - 90,MS - 80
 
 AMZN - 90,MS - 80
