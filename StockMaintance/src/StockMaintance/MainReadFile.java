@@ -9,9 +9,12 @@ package StockMaintance;
 
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -21,22 +24,51 @@ import java.util.Set;
 public class MainReadFile {
     private static Scanner sc;
     public static HashMap<String, Double> hash=new HashMap<String, Double>();
-	public static void main(String[] args) throws IOException {
-    	sc = new Scanner(System.in);  
-    	String Filename=sc.next();
-    	hash=ReadingRate();
-    	HashMap< Double,String> versionString = readingLinesfromFiles(Filename);
-    	Set<Entry<Double, String>> entrySet = versionString.entrySet();
-    	   for (Entry<Double, String> entry : entrySet) 
-    	   {
-    	      System.out.println(entry.getValue());
-    	   }
-    }
+	public static void  main(String[] args)  {
+    		sc = new Scanner(System.in);  
+	    	String File=sc.next();
+	    	ReadFile(File);
+	}
 	
+	public static HashMap<Double, String> ReadFile(String Filename){
+		HashMap< Double,String> versionString=null;
+		try{
+	    	if(Filename.contains(".txt")){
+		    	hash=ReadingRate();
+		    	versionString = readingLinesfromFiles(Filename);
+		    	Set<Entry<Double, String>> entrySet = versionString.entrySet();
+		    	List<Double> list= new ArrayList<Double>();
+		    	   for (Entry<Double, String> entry : entrySet){
+		    	     list.add(entry.getKey());
+		    	   }
+		    	   Collections.sort(list, Collections.reverseOrder());
+		    	   for(Double D:list){
+		    		  for (Entry<Double, String> entry : entrySet) 
+			    	   {
+		    			  if(D==entry.getKey()){
+		    				  System.out.println(entry.getValue());
+		    			  }
+			    	   }
+		    		  
+		    	  }
+	    	}else{
+	    		System.out.println("Given document is not in prescribed extention");
+	    	}
+		}catch(NullPointerException e){
+			System.out.println("Given document is not in prescribed fromat");
+		}catch (FileNotFoundException e) {
+			System.out.println("Given document is not found in location");
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return versionString;
+	}
 
 	private static HashMap<String, Double> ReadingRate() throws IOException {
 		 try {
-	            FileReader reader = new FileReader("C:\\Users\\sriraman_d\\Desktop\\rate.txt");
+	            FileReader reader = new FileReader("rate.txt");
 	            BufferedReader bufferedReader = new BufferedReader(reader);
 	            String line;
 	            while ((line = bufferedReader.readLine()) != null) {
@@ -50,13 +82,13 @@ public class MainReadFile {
 	            	}
 	            }
 	            reader.close();
-	        }catch (IOException e) {
-	            e.printStackTrace();
+	        }catch (NumberFormatException e) {
+	            System.out.println("Please fill correct rate in rate document");
 	        }
-		 return hash;	
+		 return hash;
 	}
 
-    private static  HashMap< Double,String> readingLinesfromFiles(String Filename) throws IOException {
+    public static  HashMap< Double,String> readingLinesfromFiles(String Filename) throws Exception {
     	   HashMap< Double,String> Valuehash=new HashMap< Double,String>();
 		   try {	
 		            FileReader reader = new FileReader(Filename);
@@ -78,8 +110,8 @@ public class MainReadFile {
 		                	Valuehash.put(total, line);
 		            }
 		            reader.close();
-	        	}catch(IOException e) {
-	        		e.printStackTrace();
+	        	}catch(NullPointerException e) {
+	        		    System.out.println("Without correct rate we cant proceed further");
 	        	}
 	return Valuehash;
     }
